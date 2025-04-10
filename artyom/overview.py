@@ -43,20 +43,20 @@ def preprocess_dataset(df: pd.DataFrame) -> None:
 def visualize_dataset(df: pd.DataFrame) -> None:
     input_metric_cols = st.columns(2)
     
-    size_metric_col_name = input_metric_cols[0].selectbox("Visualize as size", ["realSum", "guest_satisfaction_overall"])
-    color_metric_col_name = input_metric_cols[1].selectbox("Visualize as color", ["realSum", "guest_satisfaction_overall"])
+    size_metric_col = input_metric_cols[0].selectbox("Visualize as size", ["realSum", "guest_satisfaction_overall"])
+    color_metric_col = input_metric_cols[1].selectbox("Visualize as color", ["realSum", "guest_satisfaction_overall"])
     
-    room_type_filter = st.selectbox("Filter Room Type", df["room_type"].unique())
-    if room_type_filter:
+    room_type_filter = st.selectbox("Filter Room Type", ["All"] + df["room_type"].unique().tolist())
+    if room_type_filter and room_type_filter != "All":
         df = df[df["room_type"] == room_type_filter]
     
     
-    df["color_metric"] = df[color_metric_col_name].apply(
+    df["color_metric"] = df[color_metric_col].apply(
         lambda x: (
-            int(255 / df[color_metric_col_name].max() * x),
-            100,
-            150,
-            255 # Transparency
+            int(255 / df[color_metric_col].max() * x),  # Red
+            100,                                        # Green
+            150,                                        # Blue
+            255                                         # Transparency
         )
     )
     
@@ -69,7 +69,7 @@ def visualize_dataset(df: pd.DataFrame) -> None:
     
     st.map(
         df.rename(columns={"lng": "lon", "lat": "lat"}),
-        size=size_metric_col_name,
+        size=size_metric_col,
         color="color_metric",
     )
     
