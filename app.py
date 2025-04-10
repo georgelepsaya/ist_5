@@ -21,14 +21,13 @@ pages = {
                 url_path="artyom-exploration",
                 icon="📊"),
     ],
-    "Edgars": [
+    "Border Crossings (Edgars)": [
         st.Page("edgars/overview.py",
                 title="Dataset",
                 url_path="edgars-overview",
                 icon="📄"),
         st.Page("edgars/exploration.py",
-                title="Exploration",
-                url_path="edgars-exploration",
+                title="Border Crossings Explorer",
                 icon="📊"),
     ],
     "Georgy": [
