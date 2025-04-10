@@ -15,12 +15,8 @@ pages = {
     ],
     "Artyom": [
         st.Page("artyom/overview.py",
-                title="Dataset",
+                title="Dataset & Exploration",
                 url_path="artyom-overview",
-                icon="📄"),
-        st.Page("artyom/exploration.py",
-                title="Exploration",
-                url_path="artyom-exploration",
                 icon="📊"),
     ],
     "Border Crossings (Edgars)": [
