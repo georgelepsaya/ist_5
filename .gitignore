@@ -1,7 +1,4 @@
 .DS_Store
 .idea
 .venv
-data/andrii/*
-data/artyom/*
-data/edgars/*
 data/georgy/*
