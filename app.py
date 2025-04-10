@@ -1,5 +1,7 @@
 import streamlit as st
 
+st.set_page_config(layout="wide")
+
 pages = {
     "Andrii": [
         st.Page("andrii/overview.py",
