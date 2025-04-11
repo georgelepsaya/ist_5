@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
-
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler
 
 st.title("Dataset overview and preparation")
 
@@ -76,7 +77,26 @@ df = df.drop([
     "date"
 ], axis=1)
 
-st.session_state.german_housing_df = df
+df["baseRent"].dropna()
+
+rent_transf = np.log(df["baseRent"] + 1)
+df["rent_transf"] = rent_transf
+
+perc25 = df["rent_transf"].quantile(0.25)
+perc75 = df["rent_transf"].quantile(0.75)
+iqr = perc75 - perc25
+lower = perc25 - 1.5 * iqr
+upper = perc75 + 1.5 * iqr
+
+df['rent_transf'] = df['rent_transf'].clip(lower=lower, upper=upper)
+
+rent_transf = np.array(df['rent_transf']).reshape(-1, 1)
+scaler = MinMaxScaler().fit(rent_transf)
+df["rent_transf"] = scaler.transform(rent_transf)
+
+df['color'] = df['rent_transf'].apply(lambda x: (int(x * 255), 45, 128, 128))
+
+st.session_state.housing = df
 
 st.subheader("☑ Dataset after pre-processing")
 
