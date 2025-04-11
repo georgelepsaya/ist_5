@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-st.title("Interactive Dataset Exploration")
+st.title("Rental offers in Germany 🇩🇪")
 
 currency = "€"
 

@@ -28,9 +28,9 @@ pages = {
                 title="Border Crossings Explorer",
                 icon="📊"),
     ],
-    "Housing in Germany (Georgy)": [
+    "German rental offers (Georgy)": [
         st.Page("georgy/overview.py",
-                title="Dataset",
+                title="Dataset overview",
                 url_path="georgy-overview",
                 icon="📄"),
         st.Page("georgy/exploration.py",
