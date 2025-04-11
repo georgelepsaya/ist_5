@@ -20,7 +20,6 @@ if 'german_housing_df' in st.session_state:
 
     merged_df = pd.merge(postcode_avg, geo_df, left_on="geo_plz", right_on="postcode", how="inner")
     merged_df = merged_df.dropna()
-    st.dataframe(merged_df)
     if merged_df.empty:
         st.error(
             "Bad merge")
