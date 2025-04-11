@@ -1,4 +1,6 @@
 import streamlit as st
+import pandas as pd
+
 
 st.title("Dataset overview and preparation")
 
@@ -29,9 +31,13 @@ st.markdown(
     - Living space in m²
 
     And many more. There are missing values in this dataset for some variables, which is why data pre-processing
-    is done in the next step. Below is the initial state of the dataset:
+    is done in the next step. Below is a snippet of the initial state of the dataset:
     """
 )
+
+df = pd.read_csv("data/georgy/germany_housing.csv")
+
+st.dataframe(df.head())
 
 st.header("Data pre-processing")
 
@@ -48,8 +54,31 @@ st.markdown(
         model but to conduct a meaningful exploratory analysis of this dataset.
     2. Remove irrelevant variables:
         - Some of the variables are out of the scope of this analysis
+        - "Description" and "Facilities" columns have already been dropped to lower the size of the dataset
     3. Remove duplicate variables
         - There are variables with a different name, which contains the same data in the same or worse format.
         These columns should be dropped.
     """
 )
+
+df = df.drop([
+    "heatingType",
+    "telekomTvOffer",
+    "telekomHybridUploadSpeed",
+    "pricetrend",
+    "scoutId",
+    "geo_bln",
+    "street",
+    "energyEfficiencyClass",
+    "lastRefurbish",
+    "electricityBasePrice",
+    "electricityKwhPrice",
+    "date"
+], axis=1)
+
+st.session_state.german_housing_df = df
+
+st.subheader("☑ Dataset after pre-processing")
+
+st.dataframe(df.head())
+
