@@ -77,9 +77,13 @@ df = df.drop([
     "date"
 ], axis=1)
 
-df["baseRent"].dropna()
+df = df.rename(columns={"totalRent": "Total rent"})
+df = df.rename(columns={"baseRent": "Base rent"})
 
-rent_transf = np.log(df["baseRent"] + 1)
+
+df["Base rent"].dropna()
+
+rent_transf = np.log(df["Base rent"] + 1)
 df["rent_transf"] = rent_transf
 
 perc25 = df["rent_transf"].quantile(0.25)
@@ -94,7 +98,7 @@ rent_transf = np.array(df['rent_transf']).reshape(-1, 1)
 scaler = MinMaxScaler().fit(rent_transf)
 df["rent_transf"] = scaler.transform(rent_transf)
 
-df['color'] = df['rent_transf'].apply(lambda x: (int(x * 255), 45, 128, 128))
+df['color'] = df['rent_transf'].apply(lambda x: (int(x * 255), 45, 128, 170))
 
 st.session_state.housing = df
 

@@ -3,13 +3,39 @@ import pandas as pd
 
 st.title("Interactive Dataset Exploration")
 
+currency = "€"
+
 if 'housing' in st.session_state:
     df = st.session_state.housing
 
+    states = ['All', 'Nordrhein_Westfalen', 'Rheinland_Pfalz', 'Sachsen', 'Bremen',
+             'Schleswig_Holstein', 'Baden_Württemberg', 'Thüringen', 'Hessen',
+             'Niedersachsen', 'Bayern', 'Hamburg', 'Sachsen_Anhalt',
+             'Mecklenburg_Vorpommern', 'Berlin', 'Brandenburg', 'Saarland']
+    bundesland = st.selectbox("Bundesland", [opt.replace("_", " ") for opt in states])
+
+    rent_price = st.radio(
+        "Rent price",
+        ["Total rent", "Base rent"],
+        captions=[
+            "Including service fees",
+            "Excluding service fees"
+        ],
+    )
+
+    if bundesland != 'All':
+        df = df[df['regio1'].str.replace("_", " ") == bundesland]
+
+    price_metrics_cols = st.columns(4)
+    price_metrics_cols[1].metric("Median", f"{currency}{df[rent_price].median():.2f}")
+    price_metrics_cols[3].metric("Max", f"{currency}{df[rent_price].max():.2f}")
+    price_metrics_cols[2].metric("Min", f"{currency}{df[rent_price].min():.2f}")
+    price_metrics_cols[0].metric("Average", f"{currency}{df[rent_price].mean():.2f}")
+
     postcode_avg = (
         df.groupby("geo_plz")
-        .agg(avg_totalRent=("totalRent", "mean"),
-             color=("color", "first"))
+        .agg(avg_totalRent=("Total rent", "mean"),
+             color=("color", "first"),)
         .reset_index()
     )
 
