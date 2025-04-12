@@ -7,27 +7,43 @@ st.text("Determinants of Airbnb prices in European cities")
 
 st.subheader("Main information")
 st.markdown("""
-The columns are as following:
+The `preprocess_dataset` function is responsible for cleaning up the dataset by removing unnecessary columns. 
 
-- `realSum`: the full price of accommodation for two people and two nights in EUR
-- `room_type`: the type of the accommodation 
-- `room_shared`: dummy variable for shared rooms
-- `room_private`: dummy variable for private rooms
-- `person_capacity`: the maximum number of guests 
-- `host_is_superhost`: dummy variable for superhost status
-- `multi`: dummy variable if the listing belongs to hosts with 2-4 offers
-- `biz`: dummy variable if the listing belongs to hosts with more than 4 offers
-- `cleanliness_rating`: cleanliness rating
-- `guest_satisfaction_overall`: overall rating of the listing
-- `bedrooms`: number of bedrooms (0 for studios)
-- `dist`: distance from city centre in km
-- `metro_dist`: distance from nearest metro station in km
-- `attr_index`: attraction index of the listing location
-- `attr_index_norm`: normalised attraction index (0-100)
-- `rest_index`: restaurant index of the listing location
-- `attr_index_norm`: normalised restaurant index (0-100)
-- `lng`: longitude of the listing location
-- `lat`: latitude of the listing location
+1. Column Removal: The function uses the DataFrame.drop method to remove the following columns from the dataset:
+
+### Preprocessing in `visualize_dataset`
+#### Room Type Filtering
+
+The function allows users to filter the dataset by room_type using a dropdown (`st.selectbox`).
+If a specific room type is selected (other than "All"), the dataset is filtered to include only rows where the room_type matches the selected value:
+```python
+if room_type_filter and room_type_filter != "All":
+    df = df[df["room_type"] == room_type_filter]
+```
+
+#### Color Metric Calculation:
+
+A new column, `color_metric`, is added to the dataset. 
+
+This column is calculated based on the selected `color_metric_col` (e.g., `realSum` or `guest_satisfaction_overall`).
+The color_metric column is created by applying a lambda function to scale the values of the selected column into RGBA color values:
+```python
+df["color_metric"] = df[color_metric_col].apply(
+    lambda x: (
+        int(255 / df[color_metric_col].max() * x),  # Red
+        100,                                        # Green
+        150,                                        # Blue
+        255                                         # Transparency
+    )
+)
+```
+
+#### Renaming Columns for Mapping:
+The dataset's longitude (lng) and latitude (lat) columns are renamed to lon and lat, respectively, to match the requirements of `st.map`:
+```python
+df.rename(columns={"lng": "lon", "lat": "lat"})
+```
+
 """)
 
 
