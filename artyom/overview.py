@@ -1,84 +1,38 @@
-import numpy as np
 import streamlit as st
-import pandas as pd
-from glob import glob
 
-currency = "€"
+st.title("Dataset overview and preparation")
 
+st.header("Dataset overview")
+st.text("Determinants of Airbnb prices in European cities")
 
-def load_dataset() -> pd.DataFrame:
-    dataset_filename = st.selectbox(
-        "Dataset", 
-        glob("artyom/data/*.csv"),
-        format_func=lambda x: x.split("/")[-1].rstrip(".csv").capitalize()
-    )
-    return pd.read_csv(dataset_filename)
+st.subheader("Main information")
+st.markdown("""
+The columns are as following:
 
-
-def tab_view(df: pd.DataFrame):
-    with st.expander("Table View", expanded=True):
-        st.write(df)
-
-def preprocess_dataset(df: pd.DataFrame) -> None:
-    df.drop(columns=[
-        "Unnamed: 0",
-        "room_shared",
-        "room_private",
-        "person_capacity",
-        "host_is_superhost",
-        "multi",
-        "biz",
-        "bedrooms",
-        "dist",
-        "metro_dist",
-        "attr_index",
-        "attr_index_norm",
-        "rest_index",
-        "rest_index_norm",
-    ], inplace=True)
+- `realSum`: the full price of accommodation for two people and two nights in EUR
+- `room_type`: the type of the accommodation 
+- `room_shared`: dummy variable for shared rooms
+- `room_private`: dummy variable for private rooms
+- `person_capacity`: the maximum number of guests 
+- `host_is_superhost`: dummy variable for superhost status
+- `multi`: dummy variable if the listing belongs to hosts with 2-4 offers
+- `biz`: dummy variable if the listing belongs to hosts with more than 4 offers
+- `cleanliness_rating`: cleanliness rating
+- `guest_satisfaction_overall`: overall rating of the listing
+- `bedrooms`: number of bedrooms (0 for studios)
+- `dist`: distance from city centre in km
+- `metro_dist`: distance from nearest metro station in km
+- `attr_index`: attraction index of the listing location
+- `attr_index_norm`: normalised attraction index (0-100)
+- `rest_index`: restaurant index of the listing location
+- `attr_index_norm`: normalised restaurant index (0-100)
+- `lng`: longitude of the listing location
+- `lat`: latitude of the listing location
+""")
 
 
-
-
-def visualize_dataset(df: pd.DataFrame) -> None:
-    input_metric_cols = st.columns(2)
-    
-    size_metric_col = input_metric_cols[0].selectbox("Visualize as size", ["realSum", "guest_satisfaction_overall"])
-    color_metric_col = input_metric_cols[1].selectbox("Visualize as color", ["realSum", "guest_satisfaction_overall"])
-    
-    room_type_filter = st.selectbox("Filter Room Type", ["All"] + df["room_type"].unique().tolist())
-    if room_type_filter and room_type_filter != "All":
-        df = df[df["room_type"] == room_type_filter]
-    
-    
-    df["color_metric"] = df[color_metric_col].apply(
-        lambda x: (
-            int(255 / df[color_metric_col].max() * x),  # Red
-            100,                                        # Green
-            150,                                        # Blue
-            255                                         # Transparency
-        )
-    )
-    
-    price_metrics_cols = st.columns(4)
-    
-    price_metrics_cols[0].metric("Median", f"{currency}{df['realSum'].median():.2f}")
-    price_metrics_cols[1].metric("Max", f"{currency}{df['realSum'].max():.2f}")
-    price_metrics_cols[2].metric("Min", f"{currency}{df['realSum'].min():.2f}")
-    price_metrics_cols[3].metric("Average", f"{currency}{df['realSum'].mean():.2f}")
-    
-    st.map(
-        df.rename(columns={"lng": "lon", "lat": "lat"}),
-        size=size_metric_col,
-        color="color_metric",
-    )
-    
-    
-df = load_dataset()
-try:
-    preprocess_dataset(df)
-    visualize_dataset(df)
-except Exception as e:
-    raise(e)
-finally:
-    tab_view(df)
+st.header("Data pre-processing")
+st.markdown("""
+1. Drop the columns that are not needed for the analysis.
+2. Drop the rows with missing values.
+3. Construct color metric rows for map visualization.""")
