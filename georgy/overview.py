@@ -52,8 +52,10 @@ st.markdown(
     1. If a variable contains a lot of missing values:
         - We remove it if it doesn't have much relevance for this analysis
         - We keep it to display if it is relevant at any point
-        - There is no need to perform imputation and handle all missing values, since the goal is not to build a 
-        model but to conduct a meaningful exploratory analysis of this dataset.
+        - Rows with missing values for baseRent are dropped.
+        - log2 transformation is applied in a new column for the color scheme
+        - MinMax scaling is applied for the color column
+        - Using IQR we clip outliers, equating them to the lower and upper bounds
     2. Remove irrelevant variables:
         - Some of the variables are out of the scope of this analysis
         - "Description" and "Facilities" columns have already been dropped to lower the size of the dataset
@@ -62,8 +64,6 @@ st.markdown(
         These columns should be dropped.
     """
 )
-
-
 
 st.subheader("☑ Dataset after pre-processing")
 
