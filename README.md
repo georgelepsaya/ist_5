@@ -8,19 +8,67 @@ The dataset contains rental offers scraped from Germany's biggest real estate on
 Immoscout24. This dataset only contains offers for rental properties. While it was created from 2018 
 to 2019, it is still relevant and gives a good idea of the housing situation in different parts of Germany. 
 
+The `.csv` dataset contains columns for most of the important properties, such as:
+
+- Bundesland, City, District, ZIP code, etc.
+- Service fee, base and total rent
+- Year of construction, condition, information about amenities, etc.
+- Living space in m²
+
 ### Pre-processing
 The strategy for preprocessing is the following:
+
 1. If a variable contains a lot of missing values:
     - We remove it if it doesn't have much relevance for this analysis
     - We keep it to display if it is relevant at any point
-    - There is no need to perform imputation and handle all missing values, since the goal is not to build a 
-    model but to conduct a meaningful exploratory analysis of this dataset.
+    - Rows with missing values for baseRent are dropped.
+    - log2 transformation is applied in a new column for the color scheme
+    - MinMax scaling is applied for the color column
+    - Using IQR we clip outliers, equating them to the lower and upper bounds
 2. Remove irrelevant variables:
     - Some of the variables are out of the scope of this analysis
     - "Description" and "Facilities" columns have already been dropped to lower the size of the dataset
 3. Remove duplicate variables
     - There are variables with a different name, which contains the same data in the same or worse format.
     These columns should be dropped.
+
+#### Calculating color
+
+First we apply log transformation to normalise the distribution.
+
+```python
+df["rent_transf"] = np.log(df["baseRent"] + 1)
+```
+
+Then we clip outliers, calculated with an interquantile range and set them to lower 
+and upper bound values.
+
+```python
+perc25 = df["rent_transf"].quantile(0.25)
+perc75 = df["rent_transf"].quantile(0.75)
+iqr = perc75 - perc25
+lower = perc25 - 1.5 * iqr
+upper = perc75 + 1.5 * iqr
+df['rent_transf'] = df['rent_transf'].clip(lower=lower, upper=upper)
+```
+
+Then apply min-max scaling to get values in range from 0 to 1:
+
+```python
+rent_transf = np.array(df['rent_transf']).reshape(-1, 1)
+min_val = rent_transf.min()
+max_val = rent_transf.max()
+rent_transf = (rent_transf - min_val) / (max_val - min_val)
+df["rent_transf"] = rent_transf
+```
+
+Finally, multiply value of red by the calculated values and get the color metric,
+which will be displayed on the map:
+
+```python
+df['color'] = df['rent_transf'].apply(lambda x: (int(x * 255), 45, 128, 170))
+```
+
 
 ## Exploratory Analysis report
 
@@ -38,6 +86,10 @@ On the web report it's also possible to inspect some states of Germany, e.g. Bad
 vary there and see the average and median prices.
 
 ![Rent in Germany](./images/georgy/rent_bawu.png)
+
+We can also explore the median prices of total rent prices in every state.
+
+![Rent in Germany](./images/georgy/median_prices.png)
 
 
 ## Airbnb rent prices in European cities
