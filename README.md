@@ -104,6 +104,37 @@ plt.show()
 
 ![Rent in Germany](./images/georgy/median_prices.png)
 
+Finally, we can study a relationship between living space and total rent price. Here a regression line is laid on top
+of a hexbin plot showing how many observation there are present for each point on the plot.
+The regression line shows a clear trend that the total rent price positively correlates with the living space.
+
+Outliers for `livingSpace` and `totalRent` are already removed before running this code:
+```python
+df = df.dropna(subset=["livingSpace", "totalRent"])
+plt.figure(figsize=(10, 6))
+plt.hexbin(
+    x=df["livingSpace"],
+    y=df["totalRent"],
+    gridsize=50,
+    cmap="Blues",
+    alpha=0.8,
+)
+plt.colorbar(label="Count of Observations")
+plt.xlabel("Living Space (sqm)")
+plt.ylabel("Total Rent (€)")
+plt.title("Relationship between Living Space and Total Rent (Hexbin Plot)")
+x = df["livingSpace"]
+y = df["totalRent"]
+slope, intercept = np.polyfit(x, y, 1)
+x_vals = np.linspace(x.min(), x.max(), 100)
+y_vals = slope * x_vals + intercept
+plt.plot(x_vals, y_vals, color="darkred", linewidth=2, label="Regression Line")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+![Rent in Germany](./images/georgy/regression.png)
 
 ## Airbnb rent prices in European cities
 This analysis is based on several independent datasets that share the same structure. 
