@@ -1,10 +1,6 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
-# min_val = data.min()
-# max_val = data.max()
-# return (data - min_val) / (max_val - min_val)
 
 def save_to_cache(df) -> None:
     st.session_state.housing = df
@@ -17,7 +13,6 @@ def read_dataset() -> pd.DataFrame:
 
 
 def preprocess_dataset(df: pd.DataFrame) -> pd.DataFrame:
-
     df.drop([
         "heatingType",
         "telekomTvOffer",
@@ -49,8 +44,12 @@ def preprocess_dataset(df: pd.DataFrame) -> pd.DataFrame:
     df['rent_transf'] = df['rent_transf'].clip(lower=lower, upper=upper)
 
     rent_transf = np.array(df['rent_transf']).reshape(-1, 1)
-    scaler = MinMaxScaler().fit(rent_transf)
-    df["rent_transf"] = scaler.transform(rent_transf)
+    
+    min_val = rent_transf.min()
+    max_val = rent_transf.max()
+    rent_transf = (rent_transf - min_val) / (max_val - min_val)
+
+    df["rent_transf"] = rent_transf
 
     df['color'] = df['rent_transf'].apply(lambda x: (int(x * 255), 45, 128, 170))
 
@@ -58,4 +57,5 @@ def preprocess_dataset(df: pd.DataFrame) -> pd.DataFrame:
     df.rename(columns={"baseRent": "Base rent"}, inplace=True)
     
     save_to_cache(df)
+
     return df
