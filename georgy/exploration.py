@@ -1,19 +1,25 @@
 import streamlit as st
 import pandas as pd
 
+from georgy.common import preprocess_dataset, read_dataset
+
 st.title("Rental offers in Germany 🇩🇪")
 
 currency = "€"
 
-if 'housing' in st.session_state:
-    df = st.session_state.housing
+def visualize():
+    if "housing" not in st.session_state:
+        df = read_dataset()
+        df = preprocess_dataset(df)
+    else:
+        df = st.session_state.housing
 
     states = ['All', 'Nordrhein_Westfalen', 'Rheinland_Pfalz', 'Sachsen', 'Bremen',
              'Schleswig_Holstein', 'Baden_Württemberg', 'Thüringen', 'Hessen',
              'Niedersachsen', 'Bayern', 'Hamburg', 'Sachsen_Anhalt',
              'Mecklenburg_Vorpommern', 'Berlin', 'Brandenburg', 'Saarland']
-    bundesland = st.selectbox("Bundesland", [opt.replace("_", " ") for opt in states])
 
+    bundesland = st.selectbox("Bundesland", format_func=lambda x: x.replace("_", " "), options=states)
 
     rent_price = st.radio(
         "Rent price",
@@ -25,7 +31,7 @@ if 'housing' in st.session_state:
     )
 
     if bundesland != 'All':
-        df = df[df['regio1'].str.replace("_", " ") == bundesland]
+        df = df[df['regio1'] == bundesland]
 
     price_metrics_cols = st.columns(2)
     price_metrics_cols[0].metric("Average", f"{currency}{df[rent_price].mean():.2f}", border=True)
@@ -54,9 +60,7 @@ if 'housing' in st.session_state:
 
     st.map(merged_df.rename(columns={"lng": "lon", "lat": "lat"}),
            color='color')
-else:
-    st.write("Visit 'Dataset' section first")
 
 
-
-
+if __name__ == "__main__":
+    visualize()

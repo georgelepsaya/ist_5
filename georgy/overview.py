@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler
+
+from georgy.common import preprocess_dataset, read_dataset
+# from sklearn.preprocessing import MinMaxScaler
 
 st.title("Dataset overview and preparation")
 
@@ -62,9 +64,9 @@ st.markdown(
 )
 
 
-st.session_state.housing = df
 
 st.subheader("☑ Dataset after pre-processing")
 
+df = preprocess_dataset(df)
 st.dataframe(df.head())
 
