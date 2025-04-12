@@ -161,3 +161,6 @@ The dataset's longitude (lng) and latitude (lat) columns are renamed to lon and 
 df.rename(columns={"lng": "lon", "lat": "lat"})
 ```
 
+## Examples of Analysis Results
+![alt text](images/artyom/example-barcelona.png)
+![alt text](images/artyom/example-berlin.png)
