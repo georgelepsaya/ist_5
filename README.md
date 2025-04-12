@@ -89,6 +89,19 @@ vary there and see the average and median prices.
 
 We can also explore the median prices of total rent prices in every state.
 
+```python
+median_prices = df.groupby("regio1")["totalRent"].median().reset_index()
+median_prices = median_prices.sort_values(by="totalRent", ascending=False)
+plt.figure(figsize=(10, 6))
+plt.bar(median_prices["regio1"], median_prices["totalRent"], color="skyblue")
+plt.xlabel("Bundesland")
+plt.ylabel("Median Housing Price (€)")
+plt.title("Median Housing Prices by Bundesland")
+plt.xticks(rotation=45, ha="right")
+plt.tight_layout()
+plt.show()
+```
+
 ![Rent in Germany](./images/georgy/median_prices.png)
 
 
