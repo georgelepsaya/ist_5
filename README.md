@@ -305,7 +305,7 @@ filtered = df[
     (df["Year"] <= year_range[1]) # Year range to
 ]
 ```
-![Data filters displayed in UI.](Pictures/selection_criteria.jpg)
+![Data filters displayed in UI.](images/edgars/selection_criteria.jpg)
 
 ### Charts
 
@@ -336,7 +336,7 @@ The application creates 2 charts:
     # Render the plotly chart in the streamlit app
     st.plotly_chart(fig, use_container_width=True)
     ```
-   ![Crossings over time - Chart in UI.](Pictures/chart_ex_1.jpg)
+   ![Crossings over time - Chart in UI.](images/edgars/chart_ex_1.jpg)
 
 2. **Top 10 ports by total crossings:**  
    This chart displays the Top 10 U.S. ports by total border crossings, based on data from the U.S.–Canada and U.S.–Mexico borders.
@@ -369,7 +369,7 @@ The application creates 2 charts:
     # Render the plotly chart in streamlit
     st.plotly_chart(fig2, use_container_width=True)
     ```
-   ![Top 10 ports by total crossings - Chart in UI.](Pictures/chart_ex_2.jpg)
+   ![Top 10 ports by total crossings - Chart in UI.](images/edgars/chart_ex_2.jpg)
 
 ### Data analysis
 
