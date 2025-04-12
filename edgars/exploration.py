@@ -77,7 +77,7 @@ fig = px.line(
 st.plotly_chart(fig, use_container_width=True)
 
 
-# CHART FOR MOST POPULAR CROSSED PORTS WITH BORDER PREFIX
+# CHART FOR MOST POPULAR CROSSED PORTS
 # 1) Prepare the data
 top_ports = (
     # Group by port name, aggregating sum for the crossings value and capturing the first border value
