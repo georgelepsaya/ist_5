@@ -1,3 +1,8 @@
+> [!CAUTION]
+> We have tried to upload everything to estudijas, however there was a limit of 20 MB.
+> The project is also available at: https://github.com/georgelepsaya/ist_5
+
+![alt text](images/upload-limit.png)
 # Report on Datasets and Processing
 
 ## Housing Prices in Germany
