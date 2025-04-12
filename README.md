@@ -22,6 +22,22 @@ The strategy for preprocessing is the following:
     - There are variables with a different name, which contains the same data in the same or worse format.
     These columns should be dropped.
 
+## Exploratory Analysis report
+
+### Rent prices
+
+Below is a map with average rent prices for every zip code in Germany. This mapping was achieved by merging the
+initial dataset with the one containing coordinates for zip codes.
+
+![Rent in Germany](./images/georgy/rent_germany.png)
+
+It is clear that in Eastern part of Germany prices are generally lower than in Western and Southern part of it. It is
+also clear that prices are more expensive around major cities, like Berlin, Hamburg, Munich, etc.
+
+On the web report it's also possible to inspect some states of Germany, e.g. Baden-Württemberg, to see how prices
+vary there and see the average and median prices.
+
+![Rent in Germany](./images/georgy/rent_bawu.png)
 
 
 ## Airbnb rent prices in European cities
