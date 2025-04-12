@@ -344,7 +344,7 @@ The application creates 2 charts:
 
 #### Sharp Decline in Border Crossings in Early 2020
 
-![Chart 1](Pictures/chart_1.jpg)
+![Chart 1](images/edgars/chart_1.jpg)
 
 In February 2020, there is a sharp decline in the number of border crossings at both the US - Mexico and US – Canada borders.  
 This dramatic drop aligns with the start of the COVID-19 pandemic and the related travel restrictions implemented by the countries.  
@@ -352,14 +352,14 @@ The data shows a gradual recovery beginning in late 2021, with border crossing v
 
 #### Long-Term Decline in Peak Border Activity
 
-![Chart 2](Pictures/chart_2.jpg)
+![Chart 2](images/edgars/chart_2.jpg)
 
 Border crossings peaks have decreased by around 42% since their peak in July 2000.  
 This could be attributed to changes in trade patterns, stricter border policies, and evolving technologies that reduced the need for physical border crossings.
 
 #### Top 7 Ports by Human Crossings Located at the US - Mexico Border
 
-![Chart 3](Pictures/chart_3.jpg)
+![Chart 3](images/edgars/chart_3.jpg)
 
 The busiest U.S. border crossings are on the U.S.-Mexico border because of high trade volume, large cities near the border, a lot of tourism, and significant immigration.
 
