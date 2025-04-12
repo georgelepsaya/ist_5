@@ -36,8 +36,7 @@ st.markdown(
     """
 )
 
-df = pd.read_csv("data/georgy/germany_housing.csv")
-
+df = read_dataset()
 st.dataframe(df.head())
 
 st.header("Data pre-processing")
@@ -62,43 +61,6 @@ st.markdown(
     """
 )
 
-df = df.drop([
-    "heatingType",
-    "telekomTvOffer",
-    "telekomHybridUploadSpeed",
-    "pricetrend",
-    "scoutId",
-    "geo_bln",
-    "street",
-    "energyEfficiencyClass",
-    "lastRefurbish",
-    "electricityBasePrice",
-    "electricityKwhPrice",
-    "date"
-], axis=1)
-
-df = df.rename(columns={"totalRent": "Total rent"})
-df = df.rename(columns={"baseRent": "Base rent"})
-
-
-df["Base rent"].dropna()
-
-rent_transf = np.log(df["Base rent"] + 1)
-df["rent_transf"] = rent_transf
-
-perc25 = df["rent_transf"].quantile(0.25)
-perc75 = df["rent_transf"].quantile(0.75)
-iqr = perc75 - perc25
-lower = perc25 - 1.5 * iqr
-upper = perc75 + 1.5 * iqr
-
-df['rent_transf'] = df['rent_transf'].clip(lower=lower, upper=upper)
-
-rent_transf = np.array(df['rent_transf']).reshape(-1, 1)
-scaler = MinMaxScaler().fit(rent_transf)
-df["rent_transf"] = scaler.transform(rent_transf)
-
-df['color'] = df['rent_transf'].apply(lambda x: (int(x * 255), 45, 128, 170))
 
 st.session_state.housing = df
 
