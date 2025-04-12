@@ -24,7 +24,7 @@ def load_data():
 
 df = load_data()
 
-st.title("U.S. Border Crossings Visualization")
+st.header("U.S. Border Crossings Visualization")
 st.markdown(f'Explore inbound crossings at the US-Canada and US-Mexico borders ({int(df["Year"].min())}–{int(df["Year"].max())}).')
 
 
@@ -55,7 +55,7 @@ if st.checkbox("Show data table:"):
     st.dataframe(filtered)
 
 
-# CHART FOR MOST POPULAR CROSSED PORTS WITH BORDER PREFIX
+# CHART FOR BORDER CROSSINGS OVER TIME
 # 1) Prepare the data
 # Group the filtered data by date and sum the Value column to get total crossings per date
 time_series = (
@@ -77,7 +77,7 @@ fig = px.line(
 st.plotly_chart(fig, use_container_width=True)
 
 
-# CHART FOR MOST POPULAR CROSSED PORTS WITH BORDER PREFIX
+# CHART FOR MOST POPULAR CROSSED PORTS
 # 1) Prepare the data
 top_ports = (
     # Group by port name, aggregating sum for the crossings value and capturing the first border value

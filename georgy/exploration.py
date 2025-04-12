@@ -55,9 +55,6 @@ def visualize():
             "Bad merge")
         st.stop()
 
-    min_rent = merged_df["avg_totalRent"].min()
-    max_rent = merged_df["avg_totalRent"].max()
-
     st.map(merged_df.rename(columns={"lng": "lon", "lat": "lat"}),
            color='color')
 
